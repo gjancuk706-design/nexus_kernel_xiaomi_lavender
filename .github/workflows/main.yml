@@ -21,7 +21,7 @@ jobs:
         NAME: nexus kernel xiomi lavender
       with:
         arch: arm64
-        compiler: clang/12
+        compiler: gcc/12
         defconfig: sdm660-perf_defconfig
         image: Image.gz-dtb
     
