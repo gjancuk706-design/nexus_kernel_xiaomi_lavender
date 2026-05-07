@@ -12,28 +12,23 @@ jobs:
 
     - name: Set up MemKernel as a module (M-OUT) with specified name
       run: |
-        curl -LSs "https://raw.githubusercontent.com/Poko-Apps/MemKernel/main/kernel/setup.sh" | bash -s M anrwt
+        curl -LSs "https://raw.githubusercontent.com/Poko-Apps/MemKernel/main/kernel/setup.sh" | bash -s M dogi
 
     - name: Android kernel build
       uses: lemniskett/android-kernel-actions@master
       id: build
       env:
-        NAME: nexus kernel xiomi lavender
+        NAME: Loganys1
       with:
         arch: arm64
-        compiler: gcc/12
-        defconfig: sdm660-perf_defconfig
+        compiler: clang/12
+        defconfig: defconfig
         image: Image.gz-dtb
-    
-    - name: Log directory structure to find the module
-      run: |
-        find . -type f -name "*.ko"
-        find . -type d
-  
+
     - name: Upload Kernel and Module
       uses: actions/upload-artifact@v4
       with:
         name: module
         path: |
           ${{ steps.build.outputs.outfile }}
-          ./out/drivers/memkernel/memkernel.ko
+          ./out/drivers/memkernel/memkernel.ko 
