@@ -22,7 +22,7 @@ jobs:
       with:
         arch: arm64
         compiler: clang/12
-        defconfig: ysl-perf_defconfig
+        defconfig: sdm660-perf_defconfig
         image: Image.gz-dtb
     
     - name: Log directory structure to find the module
