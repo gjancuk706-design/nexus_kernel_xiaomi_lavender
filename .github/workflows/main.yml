@@ -1,0 +1,41 @@
+name: Kernel Build
+
+on:
+  push:
+    branches:
+      - xr
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout kernel source
+      uses: actions/checkout@v4
+
+    - name: Set up MemKernel as a module (M-OUT) with specified name
+      run: |
+        curl -LSs "https://raw.githubusercontent.com/aiichi/MemKernel/main/kernel/setup.sh" | bash -s M anrwt
+
+    - name: Android kernel build
+      uses: lemniskett/android-kernel-actions@master
+      id: build
+      env:
+        NAME: Loganysl
+      with:
+        arch: arm64
+        compiler: clang/12
+        defconfig: ysl-perf_defconfig
+        image: Image.gz-dtb
+    
+    - name: Log directory structure to find the module
+      run: |
+        find . -type f -name "*.ko"
+        find . -type d
+  
+    - name: Upload Kernel and Module
+      uses: actions/upload-artifact@v4
+      with:
+        name: module
+        path: |
+          ${{ steps.build.outputs.outfile }}
+          ./out/drivers/memkernel/memkernel.ko
